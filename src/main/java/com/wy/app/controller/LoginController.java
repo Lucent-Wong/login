@@ -1,4 +1,4 @@
-package java.com.wy.login_frame.controller;
+package com.wy.app.controller;
 
 
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/test")
 public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);

@@ -1,4 +1,4 @@
-package com.wy.login_frame;
+package com.wy.app;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

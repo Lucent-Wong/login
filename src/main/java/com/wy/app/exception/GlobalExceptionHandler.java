@@ -1,4 +1,4 @@
-package java.com.wy.login_frame.exception;
+package com.wy.app.exception;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
