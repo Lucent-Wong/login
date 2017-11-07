@@ -2,10 +2,7 @@ package com.wy.app.mapper;
 
 import com.wy.app.entity.User;
 import com.wy.app.mapper.SqlProvider.UserProvider;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 
 import java.util.Set;
 
@@ -19,8 +16,9 @@ public interface UserMapper {
     User findByUsername(String username);
 
     @Insert("INSERT INTO SYS_USERS (username, password, salt, service_call_limit, locked) " +
-            "VALUES (#{username}, #{password}, #{salt}, #{service_call_limit}, #{locked})")
-    User createUser(User user);
+            "VALUES (#{username}, #{password}, #{salt}, #{serviceCallLimit}, #{locked})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int createUser(User user);
 
     @UpdateProvider(type = UserProvider.class, method = "updateUser")
     void updateUser(User user);

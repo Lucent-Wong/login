@@ -24,9 +24,17 @@ public class UserController {
     }
 
     @RequestMapping(value = "get/{username}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
     public User get(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "username") String username) {
         System.out.println("hello");
         return userService.findByUsername(username);
+    }
+
+    @RequestMapping(value = "create/{username}", method = RequestMethod.GET, produces = "application/json")
+    public Long create(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "username") String username) {
+        User user = new User();
+        user.setUsername(username);
+        user.setLocked(false);
+        user.setServiceCallLimit(-1);
+        return userService.createUser(user);
     }
 }

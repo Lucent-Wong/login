@@ -1,15 +1,29 @@
 package com.wy.app.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.io.Serializable;
 
+@Entity
 public class User implements Serializable {
 
+    @Id
     private Long id;
+
+    @Column
     private String username;
+
+    @Column
     private String password;
+
+    @Column
     private String salt;
+
+    @Column(name = "service_call_limit")
     private Integer serviceCallLimit;
 
+    @Column
     private Boolean locked = Boolean.FALSE;
 
     public User() {

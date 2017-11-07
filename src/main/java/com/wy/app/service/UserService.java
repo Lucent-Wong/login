@@ -9,7 +9,7 @@ public interface UserService {
      * 创建用户
      * @param user
      */
-    public User createUser(User user);
+    public Long createUser(User user);
 
     /**
      * 刪除用戶
