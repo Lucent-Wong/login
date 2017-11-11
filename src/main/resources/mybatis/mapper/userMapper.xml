@@ -21,7 +21,7 @@
 
     <select id = "findById" parameterType="java.lang.Long" resultMap="UserEntityMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="User_Column_Without_Credential"/>
         FROM sys_users
         WHERE id = #{id}
     </select>
