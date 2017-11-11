@@ -4,53 +4,45 @@ import com.wy.app.entity.User;
 import com.wy.app.mapper.SqlProvider.UserProvider;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Mapper
 public interface UserMapper {
 
     @Select("select id, username, locked, service_call_limit serviceCallLimit from sys_users u where u.id = #{id}")
-    User findOne(Long userId);
+    User findByUserId(Long userId);
 
     @Select("select id, username, locked, service_call_limit serviceCallLimit from sys_users u where u.username = #{username}")
     User findByUsername(String username);
 
-    @Insert("INSERT INTO SYS_USERS (username, password, salt, service_call_limit, locked) " +
+    @Insert("insert into sys_users (username, password, salt, service_call_limit, locked) " +
             "VALUES (#{username}, #{password}, #{salt}, #{serviceCallLimit}, #{locked})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int createUser(User user);
 
     @UpdateProvider(type = UserProvider.class, method = "updateUser")
-    void updateUser(User user);
+    int updateUser(User user);
 
+    @Delete("delete from sys_users u where u.id = #{id}")
+    int deleteUser(Long userId);
 
-    public void deleteUser(Long userId);
-    public int setServiceCallLimit(String username);
+    @Delete("delete from sys_users u where u.username = #{username}")
+    int deleteUserByUsername(String username);
 
-    public void deleteUserByUsername(String username);
+    @InsertProvider(type = UserProvider.class, method = "correlationRoles")
+    void correlationRoles(Long userId, List<Long> roleIds);
 
-    public void correlationRoles(Long userId, Long... roleIds);
-    public void uncorrelationRoles(Long userId, Long... roleIds);
-    public void uncorrelationAllRoles(String username);
+    @DeleteProvider(type = UserProvider.class, method = "uncorrelationRoles")
+    void uncorrelationRoles(Long userId, List<Long>roleIds);
 
-    public Set<String> correlationServices(Long userId, String... services);
-    public void uncorrelationServices(Long userId, String... services);
+    @Delete("delete from sys_users_roles where username= #{username}")
+    void uncorrelationAllRoles(@Param("username") String username);
 
+    @Select("select role from sys_users u, sys_roles r,sys_users_roles ur where u.username= #{username} and u.id=ur.user_id and r.id=ur.role_id")
+    Set<String> findRoles(@Param("username") String username);
 
-    Set<String> findRoles(String username);
+    @Select("select permission from sys_users u, sys_roles r, sys_permissions p, sys_users_roles ur, sys_roles_permissions rp where u.username= #{username} and u.id=ur.user_id and r.id=ur.role_id and r.id=rp.role_id and p.id=rp.permission_id")
+    Set<String> findPermissions(@Param("username") String username);
 
-    Set<String> findPermissions(String username);
-
-    Set<String> findServicesByUsername(String userName);
-    Set<String> findServices(Long userId);
-    int getServiceNum(Long userId);
-    int getAllServiceNum();
-    int getServiceTotalByUsername(String username);
-    int getServiceCallTotalByUsername(String username);
-    Set<String> findServices(Long userId, String serviceId);
-    Set<String> findServices(Long userId, int pageSize, int page);
-    Set<String> findAllServices(int pageSize, int page);
-    Set<String> findAllServices();
-    String getUserNameByServiceID(String serviceId);
-    int consumeServiceCall(String serviceId);
 }
