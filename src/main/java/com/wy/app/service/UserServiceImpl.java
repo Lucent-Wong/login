@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserByUsername(String username) {
-
+        userMapper.deleteByUsername(username);
     }
 
     @Override
@@ -30,12 +30,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void correlationRoles(Long userId, Long... roleIds) {
+    public void mapToRoles(Long userId, Long... roleIds) {
 
     }
 
     @Override
-    public void uncorrelationRoles(Long userId, Long... roleIds) {
+    public void unmapFromRoles(Long userId, Long... roleIds) {
 
     }
 
@@ -46,91 +46,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsernameWithoutSecret(String username) {
-        return null;
+        return findByUsername(username);
     }
 
     @Override
     public Set<String> findRoles(String username) {
-        return null;
+        return userMapper.findRoles(username);
     }
 
     @Override
     public Set<String> findPermissions(String username) {
-        return null;
+        return userMapper.findPermissions(username);
     }
 
-    @Override
-    public Set<String> correlationServices(Long userId, String... services) {
-        return null;
-    }
-
-    @Override
-    public void uncorrelationServices(Long userId, String... services) {
-
-    }
-
-    @Override
-    public Set<String> findServicesByUsername(String userName) {
-        return null;
-    }
-
-    @Override
-    public Set<String> findServices(Long userId) {
-        return null;
-    }
-
-    @Override
-    public Set<String> findServices(Long userId, String serviceId) {
-        return null;
-    }
-
-    @Override
-    public Set<String> findServices(Long userId, int pageSize, int page) {
-        return null;
-    }
-
-    @Override
-    public Set<String> findAllServices(int pageSize, int page) {
-        return null;
-    }
-
-    @Override
-    public Set<String> findAllServices() {
-        return null;
-    }
-
-    @Override
-    public int getServiceNum(Long userId) {
-        return 0;
-    }
-
-    @Override
-    public int getAllServiceNum() {
-        return 0;
-    }
-
-    @Override
-    public int getServiceTotalByUsername(String username) {
-        return 0;
-    }
-
-    @Override
-    public int getAllServiceCallTotalByUsername(String username) {
-        return 0;
-    }
-
-    @Override
-    public int consumeServiceCall(String id) {
-        return 0;
-    }
-
-    @Override
-    public int setServiceCallLimit(String username) {
-        return 0;
-    }
-
-    @Override
-    public String getUserNameByServiceID(String serviceID) {
-        return null;
-    }
 }

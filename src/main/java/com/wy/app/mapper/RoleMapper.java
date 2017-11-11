@@ -9,11 +9,11 @@ public interface RoleMapper {
     void updateRole(Role role);
     void deleteRole(Long roleId);
 
-    void correlationPermissions(Long roleId, Long... permissionIds);
-    void uncorrelationPermissions(Long roleId, Long... permissionIds);
+    void mapToPermission(Long roleId, Long permissionId);
+    void unmapFromPermission(Long roleId, Long permissionId);
 
-    Role findByRoleId(Long roleId);
-    Role findByRoleName(String roleName);
+    Role findById(Long roleId);
+    Role findByName(String roleName);
     Set<String> findUsers(String roleName);
     Set<String> findPermissions(String RoleName);
 }
