@@ -2,6 +2,7 @@ package com.wy.app.controller;
 
 import com.wy.app.entity.User;
 import com.wy.app.service.UserService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "get/{username}", method = RequestMethod.GET, produces = "application/json")
+    @RequiresPermissions("test")
     public User get(HttpServletRequest request, HttpServletResponse response, @PathVariable("username") String username) {
         return userService.findByUsername(username);
     }
@@ -54,6 +56,7 @@ public class UserController {
     @RequestMapping(value = "create/{username}", method = RequestMethod.GET, produces = "application/json")
     public Long create(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "username") String username) {
         User user = new User();
+        user.setPassword("hello");
         user.setUsername(username);
         user.setLocked(false);
         return userService.createUser(user);

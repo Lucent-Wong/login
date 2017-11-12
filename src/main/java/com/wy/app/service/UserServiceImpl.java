@@ -2,6 +2,7 @@ package com.wy.app.service;
 
 import com.wy.app.entity.User;
 import com.wy.app.mapper.UserMapper;
+import com.wy.app.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +15,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private PasswordUtil passwordUtil;
 
     @Override
     public Long createUser(User user) {
+        passwordUtil.encryptPassword(user);
         userMapper.createUser(user);
         return user.getId();
     }

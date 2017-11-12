@@ -14,16 +14,20 @@
         id, username, locked
     </sql>
 
+    <sql id="User_Column" >
+        id, username, password, salt, locked
+    </sql>
+
     <select id = "findById" parameterType="java.lang.Long" resultMap="UserEntityMap">
         SELECT
-        <include refid="User_Column_Without_Credential"/>
+        <include refid="User_Column"/>
         FROM sys_users
         WHERE id = #{id}
     </select>
 
     <select id="findByUsername" parameterType="java.lang.String" resultMap="UserEntityMap">
         SELECT
-        <include refid="User_Column_Without_Credential"/>
+        <include refid="User_Column"/>
         FROM sys_users
         WHERE username = #{username}
     </select>

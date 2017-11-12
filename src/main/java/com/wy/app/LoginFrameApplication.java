@@ -11,4 +11,5 @@ public class LoginFrameApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LoginFrameApplication.class, args);
 	}
+
 }

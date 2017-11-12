@@ -54,6 +54,10 @@ public class User implements Serializable {
         this.salt = salt;
     }
 
+    public String getCredentialsSalt() {
+        return username + salt;
+    }
+
     public Boolean getLocked() {
         return locked;
     }
