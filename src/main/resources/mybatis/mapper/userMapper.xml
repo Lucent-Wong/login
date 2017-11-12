@@ -10,11 +10,6 @@
         <result column="locked" property="locked" jdbcType="BOOLEAN"/>
     </resultMap>
 
-    <parameterMap type="java.util.Map" id="UserRoleMap">
-        <parameter property="userId" javaType="java.lang.Long"/>
-        <parameter property="roleId" javaType="java.lang.Long"/>
-    </parameterMap>
-
     <sql id="User_Column_Without_Credential" >
         id, username, locked
     </sql>
@@ -69,7 +64,7 @@
         username =#{username}
     </delete>
 
-    <insert id="mapToRole" parameterMap="UserRoleMap">
+    <insert id="mapToRole">
         INSERT INTO
         sys_users_roles
         (user_id, role_id)
@@ -77,7 +72,7 @@
         (#{userId},#{roleId})
     </insert>
 
-    <delete id="unmapFromRole" parameterMap="UserRoleMap">
+    <delete id="unmapFromRole">
         DELETE FROM
         sys_users_roles
         WHERE

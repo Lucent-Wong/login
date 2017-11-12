@@ -34,6 +34,23 @@ public class UserController {
         return userService.findPermissions(username);
     }
 
+    @RequestMapping(value = "getRoles/{username}", method = RequestMethod.GET, produces = "application/json")
+    public Set<String> getRoles(HttpServletRequest request, HttpServletResponse response, @PathVariable("username") String username) {
+        return userService.findRoles(username);
+    }
+
+    @RequestMapping(value = "mapToRoles/{username}", method = RequestMethod.GET, produces = "application/json")
+    public void mapToRoles(HttpServletRequest request, HttpServletResponse response, @PathVariable("username") String username) {
+        User user = userService.findByUsername(username);
+        userService.mapToRoles(user.getId(), 3L,4L,5L);
+    }
+
+    @RequestMapping(value = "unmapFromRoles/{username}", method = RequestMethod.GET, produces = "application/json")
+    public void unmapFromRoles(HttpServletRequest request, HttpServletResponse response, @PathVariable("username") String username) {
+        User user = userService.findByUsername(username);
+        userService.unmapFromRoles(user.getId(), 3L,4L,5L);
+    }
+
     @RequestMapping(value = "create/{username}", method = RequestMethod.GET, produces = "application/json")
     public Long create(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "username") String username) {
         User user = new User();

@@ -3,7 +3,6 @@ package com.wy.app.mapper;
 import com.wy.app.entity.User;
 import org.apache.ibatis.annotations.*;
 
-import java.util.List;
 import java.util.Set;
 
 @Mapper
@@ -21,9 +20,9 @@ public interface UserMapper {
 
     int deleteByUsername(String username);
 
-    void mapToRole(Long userId, Long roleId);
+    void mapToRole(@Param("userId") Long userId, @Param("roleId") Long roleId);
 
-    void unmapFromRole(Long userId, List roleId);
+    void unmapFromRole(@Param("userId") Long userId, @Param("roleId") Long roleId);
 
     void unmapFromAllRoles(String username);
 

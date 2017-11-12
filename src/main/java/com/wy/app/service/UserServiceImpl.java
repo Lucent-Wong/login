@@ -4,7 +4,9 @@ import com.wy.app.entity.User;
 import com.wy.app.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Set;
 
 @Service
@@ -30,13 +32,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void mapToRoles(Long userId, Long... roleIds) {
-
+        Arrays.stream(roleIds).forEach(roleId -> userMapper.mapToRole(userId, roleId));
     }
 
     @Override
+    @Transactional
     public void unmapFromRoles(Long userId, Long... roleIds) {
-
+        Arrays.stream(roleIds).forEach(roleId -> userMapper.unmapFromRole(userId, roleId));
     }
 
     @Override
