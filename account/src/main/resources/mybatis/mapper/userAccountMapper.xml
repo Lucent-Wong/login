@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.primedice.common.mapper.UserAccountMapper" >
+<mapper namespace="com.primedice.account.mapper.UserAccountMapper" >
     <resultMap id="UserAccountEntityMap" type="com.primedice.common.entity.UserAccount" >
         <id column="user_id" property="userId" jdbcType="BIGINT" />
         <id column="deposit" property="deposit" jdbcType="BIGINT" />
