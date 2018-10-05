@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
     public Long createUser(User user) {
         passwordUtil.encryptPassword(user);
         userMapper.createUser(user);
+
         return user.getId();
     }
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.primedice.app.mapper.CurrencyMapper" >
+
+    <sql id="Currency_Column" >
+        id, user_id, deposit_change
+    </sql>
+
+    <insert id="createCurrency" parameterType="com.primedice.common.entity.Currency" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
+        INSERT INTO
+        sys_currency
+        (id,user_id,deposit_change)
+        VALUES
+        (#{id},#{userId},#{deposit_change})
+    </insert>
+
+    <select id="findByUserId" resultType="com.primedice.common.entity.Currency">
+        SELECT
+        <include refid="Currency_Column"/>
+        FROM sys_currency
+        WHERE user_id = id;
+    </select>
+</mapper>

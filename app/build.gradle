@@ -28,9 +28,9 @@ repositories {
 dependencies {
     compile project(':common')
 
+    compile('org.web3j:core:3.4.0')
+    
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    //compile('org.springframework.boot:spring-boot-starter-data-mongodb')
-    //compile('org.springframework.kafka:spring-kafka')
     compile(group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '1.1.1')
     compile(group: 'org.springframework.session', name: 'spring-session-data-redis', version: '1.3.1.RELEASE')
     compile(group: 'org.springframework.boot', name: 'spring-boot-starter-redis', version: '1.4.7.RELEASE')
@@ -38,7 +38,11 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 
     compile(group: 'org.projectlombok', name: 'lombok', version: '1.18.2')
-    compile(group: 'org.apache.shiro', name: 'shiro-spring', version: '1.4.0')
+    compile group: 'org.apache.shiro', name: 'shiro-core', version: '1.4.0'
+	compile group: 'org.apache.shiro', name: 'shiro-web', version: '1.4.0'
+	compile group: 'org.apache.shiro', name: 'shiro-spring', version: '1.4.0'
+	compile group: 'org.apache.shiro', name: 'shiro-ehcache', version: '1.4.0'
+    compile group: 'org.apache.shiro', name: 'shiro-quartz', version: '1.4.0'
     runtime('mysql:mysql-connector-java')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

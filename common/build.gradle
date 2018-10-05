@@ -1,12 +1,19 @@
 buildscript {
+    ext {
+        springBootVersion = '1.5.8.RELEASE'
+    }
     repositories {
         mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
 
 group = 'com.primedice'
 version = '0.0.1-SNAPSHOT'
@@ -17,5 +24,8 @@ repositories {
 }
 
 dependencies {
-	compile(group: 'org.projectlombok', name: 'lombok', version: '1.18.2')
+    compile(group: 'org.projectlombok', name: 'lombok', version: '1.18.2')
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.7'
+    compile('org.springframework.boot:spring-boot-starter-web')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 }

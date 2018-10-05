@@ -15,7 +15,7 @@ create table sys_users (
   available bool default true,
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  constraint pk_sys_users primary key(id)
+  constraint pk_sys_users primary key(id),
 ) charset=utf8 ENGINE=InnoDB;
 create unique index idx_sys_users_username on sys_users(username);
 
@@ -60,7 +60,9 @@ create table sys_roles_permissions (
 create table sys_user_account (
   user_id bigint,
   deposit bigint,
-  address varchar(100),
+  eth_balance bigint,
+  wallet varchar(100),
+  secret varchar(100),
   description varchar(100),
   available bool default true,
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
