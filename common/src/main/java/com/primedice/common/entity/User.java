@@ -21,9 +21,6 @@ public class User implements Serializable {
 
     private Boolean locked;
 
-    public User() {
-    }
-
     @JsonIgnore
     public String getCredentialsSalt() {
         return username + salt;

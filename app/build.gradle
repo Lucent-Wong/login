@@ -43,6 +43,10 @@ dependencies {
 	compile group: 'org.apache.shiro', name: 'shiro-spring', version: '1.4.0'
 	compile group: 'org.apache.shiro', name: 'shiro-ehcache', version: '1.4.0'
     compile group: 'org.apache.shiro', name: 'shiro-quartz', version: '1.4.0'
+
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
+
     runtime('mysql:mysql-connector-java')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

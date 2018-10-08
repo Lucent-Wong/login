@@ -5,6 +5,8 @@ import com.primedice.app.service.UserService;
 import com.primedice.common.entity.User;
 import com.primedice.common.entity.UserAccount;
 import com.primedice.common.entity.WithdrawRequest;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.web3j.utils.Convert;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Api("user controller")
 @RestController
 @RequestMapping(value = "/users")
 @Setter
@@ -31,35 +34,38 @@ public class UserController {
     private UserAccountService userAccountService;
 
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
+    @ApiOperation(value="get", notes = "get user")
+    @GetMapping(produces = "application/json")
     public User get(HttpServletRequest request, HttpServletResponse response) {
         String username = (String) SecurityUtils.getSubject().getPrincipal();
         return userService.findByUsername(username);
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    @ApiOperation(value="create", notes = "create user")
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public void create(HttpServletRequest request, HttpServletResponse response, @RequestBody User user) {
-        User newUser = new User();
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(user.getPassword());
-        newUser.setLocked(user.getLocked());
+        User newUser = User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .locked(user.getLocked())
+                .build();
         userService.createUser(newUser);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    @ApiOperation(value="update", notes = "update user")
+    @PutMapping(consumes = "application/json", produces = "application/json")
     public void update(HttpServletRequest request, HttpServletResponse response, @RequestBody User user) {
         String username = (String) SecurityUtils.getSubject().getPrincipal();
-        User newUser = new User();
-        newUser.setUsername(username);
-        newUser.setPassword(user.getPassword());
-        newUser.setLocked(user.getLocked());
+        User newUser = User.builder()
+                .username(username)
+                .password(user.getPassword())
+                .locked(user.getLocked())
+                .build();
         userService.updateUser(newUser);
     }
 
-    @RequestMapping(value = "withdraw", method = RequestMethod.POST, consumes = "applicatoin/json",
-            produces = "application/json")
-    @ResponseBody
+    @ApiOperation(value="withdraw", notes = "withdraw deposit")
+    @PostMapping(value = "withdraw", consumes = "applicatoin/json", produces = "application/json")
     public UserAccount withdraw(HttpServletRequest request, HttpServletResponse response,
                                 @RequestBody WithdrawRequest withdrawRequest) throws Exception {
         String username = (String) SecurityUtils.getSubject().getPrincipal();
@@ -68,34 +74,38 @@ public class UserController {
                 Convert.Unit.fromString(withdrawRequest.getUnit()));
     }
 
-    @RequestMapping(value = "syncBalance", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
+    @ApiOperation(value="syncBalance", notes = "sync deposit and balance")
+    @GetMapping(value = "syncBalance", produces = "application/json")
     public UserAccount syncBalance(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String username = (String) SecurityUtils.getSubject().getPrincipal();
         return userAccountService.syncBalance(username);
     }
 
     /**** admin methods *****/
-    @RequestMapping(value = "{username}", method = RequestMethod.DELETE, produces = "application/json")
+    @ApiOperation(value="delete user", notes = "delete user")
+    @DeleteMapping(value = "{username}", produces = "application/json")
     @RequiresRoles(value = "root")
     public void delete(HttpServletRequest request, HttpServletResponse response, @PathVariable String username) {
         userAccountService.disableWallet(username);
     }
 
-    @RequestMapping(value = "{username}", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value="get any user", notes = "get any user")
+    @GetMapping(value = "{username}", produces = "application/json")
     @RequiresRoles(value = "root")
     public User getUser(HttpServletRequest request, HttpServletResponse response, @PathVariable String username) {
         return userService.findByUsername(username);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    @ApiOperation(value="update any user", notes = "update any user")
+    @PutMapping(value = "{username}", consumes = "application/json", produces = "application/json")
     @RequiresRoles(value = "root")
     public User updateUser(HttpServletRequest request, HttpServletResponse response,
                            @PathVariable String username, @RequestBody User user) {
-        User newUser = new User();
-        newUser.setUsername(username);
-        newUser.setPassword(user.getPassword());
-        newUser.setLocked(user.getLocked());
+        User newUser = User.builder()
+                .username(username)
+                .password(user.getPassword())
+                .locked(user.getLocked())
+                .build();
         userService.updateUser(newUser);
         return newUser;
     }

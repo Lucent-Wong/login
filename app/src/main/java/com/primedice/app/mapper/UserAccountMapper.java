@@ -1,7 +1,9 @@
 package com.primedice.app.mapper;
 
 import com.primedice.common.entity.UserAccount;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface UserAccountMapper {
 
     UserAccount findByUserId(Long id);
