@@ -1,5 +1,7 @@
 package com.primedice.app.config;
 
+import com.primedice.app.auth.CaptchaAccessControlFilter;
+import com.primedice.app.auth.CaptchaAuthFilter;
 import com.primedice.app.auth.DBShiroRealm;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -22,10 +25,14 @@ public class ShiroConfiguration {
     public ShiroFilterFactoryBean shirFilter(org.apache.shiro.mgt.SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
+
+        Map<String, Filter> filterMap = new LinkedHashMap<>();
+        filterMap.put("authc", getCaptchaAuthFilter());
+        filterMap.put("captcha", getCaptchaAccessControlFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
         // 配置不会被拦截的链接 顺序判断
-        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         filterChainDefinitionMap.put("/swagger-resources", "anon");
         filterChainDefinitionMap.put("/swagger-resources/configuration/security", "anon");
@@ -33,8 +40,9 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/v2/api-docs", "anon");
         filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
-        filterChainDefinitionMap.put("/authenticate", "anon");
+        filterChainDefinitionMap.put("/captcha", "anon");
         filterChainDefinitionMap.put("/users/register", "anon");
+        filterChainDefinitionMap.put("/authenticate", "captcha");
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/logout", "logout");
         //<!-- 过滤链定义，从上向下顺序执行，一般将/**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
@@ -46,7 +54,7 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSuccessUrl("/index");
 
         //未授权界面;
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/error");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -93,5 +101,15 @@ public class ShiroConfiguration {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
+    }
+
+    @Bean
+    public CaptchaAuthFilter getCaptchaAuthFilter() {
+        return new CaptchaAuthFilter();
+    }
+
+    @Bean
+    public CaptchaAccessControlFilter getCaptchaAccessControlFilter() {
+        return new CaptchaAccessControlFilter();
     }
 }
