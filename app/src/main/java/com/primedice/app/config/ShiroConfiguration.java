@@ -33,6 +33,8 @@ public class ShiroConfiguration {
         //拦截器.
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
         // 配置不会被拦截的链接 顺序判断
+        filterChainDefinitionMap.put("/captcha", "anon");
+        filterChainDefinitionMap.put("/authenticate", "anon");
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         filterChainDefinitionMap.put("/swagger-resources", "anon");
         filterChainDefinitionMap.put("/swagger-resources/configuration/security", "anon");
@@ -40,9 +42,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/v2/api-docs", "anon");
         filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
-        filterChainDefinitionMap.put("/captcha", "anon");
         filterChainDefinitionMap.put("/users/register", "anon");
-        filterChainDefinitionMap.put("/authenticate", "captcha");
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/logout", "logout");
         //<!-- 过滤链定义，从上向下顺序执行，一般将/**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
@@ -103,13 +103,11 @@ public class ShiroConfiguration {
         return authorizationAttributeSourceAdvisor;
     }
 
-    @Bean
-    public CaptchaAuthFilter getCaptchaAuthFilter() {
+    private CaptchaAuthFilter getCaptchaAuthFilter() {
         return new CaptchaAuthFilter();
     }
 
-    @Bean
-    public CaptchaAccessControlFilter getCaptchaAccessControlFilter() {
+    private CaptchaAccessControlFilter getCaptchaAccessControlFilter() {
         return new CaptchaAccessControlFilter();
     }
 }

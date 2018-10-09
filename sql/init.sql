@@ -59,7 +59,7 @@ create table sys_roles_permissions (
 
 create table sys_user_account (
   user_id bigint,
-  deposit bigint,
+  deposit bigint default 0,
   eth_balance bigint,
   wallet varchar(100),
   secret varchar(100),
