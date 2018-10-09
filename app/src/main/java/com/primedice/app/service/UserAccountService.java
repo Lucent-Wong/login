@@ -2,14 +2,15 @@ package com.primedice.app.service;
 
 
 import com.primedice.common.entity.UserAccount;
-import org.web3j.crypto.Credentials;
 import org.web3j.utils.Convert;
 
 
 public interface UserAccountService {
     int createWallet(String username) throws Exception;
 
-    Credentials getWallet(String username) throws Exception;
+    UserAccount getWallet(String username) throws Exception;
+
+    UserAccount getWalletWithoutCredential(String username) throws Exception;
 
     int disableWallet(String username);
 

@@ -2,14 +2,20 @@ package com.primedice.common.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.primedice.common.exceptions.InsufficientDepositException;
 import com.primedice.common.exceptions.InsufficientBalanceException;
 import com.primedice.common.exceptions.InvalidValueException;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserAccount {
     Long userId;
     Long deposit;
@@ -17,7 +23,7 @@ public class UserAccount {
     String description;
     String wallet;
     String walletSecret;
-    Boolean available = Boolean.TRUE;
+    Boolean available;
 
     @JsonIgnore
     public UserAccount withdraw(long value) throws InvalidValueException, InsufficientDepositException {

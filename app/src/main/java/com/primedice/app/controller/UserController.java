@@ -15,7 +15,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.web3j.utils.Convert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,22 +70,6 @@ public class UserController {
         userService.updateUser(newUser);
     }
 
-    @ApiOperation(value="withdraw", notes = "withdraw deposit")
-    @PostMapping(value = "withdraw", consumes = "applicatoin/json", produces = "application/json")
-    public UserAccount withdraw(HttpServletRequest request, HttpServletResponse response,
-                                @RequestBody WithdrawRequest withdrawRequest) throws Exception {
-        String username = (String) SecurityUtils.getSubject().getPrincipal();
-        return userAccountService.withdraw(username,
-                withdrawRequest.getValue(),
-                Convert.Unit.fromString(withdrawRequest.getUnit()));
-    }
-
-    @ApiOperation(value="syncBalance", notes = "sync deposit and balance")
-    @GetMapping(value = "syncBalance", produces = "application/json")
-    public UserAccount syncBalance(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String username = (String) SecurityUtils.getSubject().getPrincipal();
-        return userAccountService.syncBalance(username);
-    }
 
     /**** admin methods *****/
     @ApiOperation(value="delete user", notes = "delete user")

@@ -6,20 +6,26 @@
         <id column="user_id" property="userId" jdbcType="BIGINT" />
         <id column="deposit" property="deposit" jdbcType="BIGINT" />
         <id column="eth_balance" property="ethBalance" jdbcType="BIGINT" />
+        <id column="secret" property="walletSecret" jdbcType="VARCHAR" />
+        <id column="wallet" property="wallet" jdbcType="VARCHAR" />
         <id column="description" property="description" jdbcType="VARCHAR" />
         <result column="available" property="available" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <sql id="UserAccount_Column" >
+        user_id, deposit, eth_balance, secret, wallet, description, available
+    </sql>
+
+    <sql id="UserAccount_Column_Without_Credential" >
         user_id, deposit, eth_balance, description, available
     </sql>
 
     <insert id="createUserAccount" parameterType="com.primedice.common.entity.UserAccount">
         INSERT INTO
         sys_user_account
-        <include refid="UserAccount_Column"/>
+        (<include refid="UserAccount_Column"/>)
         VALUES
-        (#{userId},#{deposit},#{description},#{available})
+        (#{userId},#{deposit},#{ethBalance},#{walletSecret},#{wallet},#{description},#{available})
     </insert>
 
     <update id="updateUserAccount" parameterType="com.primedice.common.entity.UserAccount">
@@ -52,5 +58,12 @@
         from sys_user_account
         where user_id = #{id}
         for update
+    </select>
+
+    <select id="findByUserIdWithoutCredential" parameterType="java.lang.Long" resultType="com.primedice.common.entity.UserAccount">
+        SELECT
+        <include refid="UserAccount_Column_Without_Credential"/>
+        from sys_user_account
+        where user_id = #{id}
     </select>
 </mapper>

@@ -19,11 +19,8 @@ import org.web3j.tx.Transfer;
 import org.web3j.utils.Convert;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.SecureRandom;
 
 import static com.primedice.app.constants.Constant.ROOT_ACCOUNT_NAME;
@@ -48,23 +45,28 @@ public class UserAccountServiceImpl implements UserAccountService {
     public int createWallet(String username) throws Exception {
         User user = userService.findByUsername(username);
         String secret = getSecret();
-        String walletFile = WalletUtils.generateFullNewWalletFile(secret, new File(properties.getFilePath()));
-        String walletContent = getWalletContent(walletFile);
+        String walletContent = WalletUtils.generateWalletFileContent(secret, true);
         UserAccount userAccount = UserAccount.builder()
                 .walletSecret(secret)
                 .wallet(walletContent)
                 .available(true)
                 .deposit(0L)
+                .ethBalance(0L)
                 .userId(user.getId())
                 .build();
         return userAccountMapper.createUserAccount(userAccount);
     }
 
     @Override
-    public Credentials getWallet(String username) throws Exception  {
+    public UserAccount getWallet(String username) throws Exception  {
         User user = userService.findByUsername(username);
-        UserAccount userAccount = userAccountMapper.findByUserId(user.getId());
-        return getCredentials(userAccount);
+        return userAccountMapper.findByUserId(user.getId());
+    }
+
+    @Override
+    public UserAccount getWalletWithoutCredential(String username) throws Exception  {
+        User user = userService.findByUsername(username);
+        return userAccountMapper.findByUserIdWithoutCredential(user.getId());
     }
 
     @Override
@@ -157,13 +159,6 @@ public class UserAccountServiceImpl implements UserAccountService {
         SecureRandom secureRandom = new SecureRandom();
         secureRandom.nextBytes(bytes);
         return new String(bytes);
-    }
-
-    private String getWalletContent(String fileName) throws IOException {
-        StringBuffer stringBuffer = new StringBuffer();
-        String path = properties.getFilePath() + "/" + fileName;
-        Files.lines(Paths.get(path)).forEach(line -> stringBuffer.append(line));
-        return stringBuffer.toString();
     }
 
     private Credentials getCredentials(UserAccount userAccount) throws IOException, CipherException {

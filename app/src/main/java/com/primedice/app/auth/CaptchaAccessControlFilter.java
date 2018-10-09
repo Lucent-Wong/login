@@ -11,7 +11,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
 import static com.primedice.app.constants.Constant.CAPTCHA_CODE;
 import static org.apache.shiro.web.filter.authc.FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME;
 
