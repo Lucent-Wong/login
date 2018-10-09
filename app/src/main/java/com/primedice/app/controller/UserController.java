@@ -5,6 +5,7 @@ import com.primedice.app.service.UserService;
 import com.primedice.common.entity.User;
 import com.primedice.common.entity.UserAccount;
 import com.primedice.common.entity.WithdrawRequest;
+import com.primedice.common.exceptions.InternalErrorException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
@@ -42,14 +43,20 @@ public class UserController {
     }
 
     @ApiOperation(value="create", notes = "create user")
-    @PostMapping(consumes = "application/json", produces = "application/json")
-    public void create(HttpServletRequest request, HttpServletResponse response, @RequestBody User user) {
+    @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
+    public void create(HttpServletRequest request, HttpServletResponse response, @RequestBody User user) throws Exception {
         User newUser = User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .locked(user.getLocked())
                 .build();
         userService.createUser(newUser);
+        try {
+            userAccountService.createWallet(user.getUsername());
+        } catch (Exception e) {
+            log.error("error when create wallet", e);
+            throw new InternalErrorException("error when create user account");
+        }
     }
 
     @ApiOperation(value="update", notes = "update user")

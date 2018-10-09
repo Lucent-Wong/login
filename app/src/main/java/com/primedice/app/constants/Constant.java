@@ -2,7 +2,7 @@ package com.primedice.app.constants;
 
 public interface Constant {
     String ROOT_ACCOUNT_NAME = "root";
-    String CAPTCHA_CODE = "kaptchaCode";
+    String CAPTCHA_CODE = "captcha";
 
     String STATUS_SUCCESS = "success";
     String STATUS_FAIL = "fail";

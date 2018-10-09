@@ -1,10 +1,8 @@
 package com.primedice.common.exceptions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import javax.security.auth.login.AccountException;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class InsufficientDepositException extends Exception {
+public class InsufficientDepositException extends AccountException {
     public InsufficientDepositException(String message) {
         super(message);
     }

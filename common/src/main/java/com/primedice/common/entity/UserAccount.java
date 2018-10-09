@@ -2,8 +2,8 @@ package com.primedice.common.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.primedice.common.exceptions.InsufficientBalanceException;
 import com.primedice.common.exceptions.InsufficientDepositException;
+import com.primedice.common.exceptions.InsufficientBalanceException;
 import com.primedice.common.exceptions.InvalidValueException;
 import lombok.Builder;
 import lombok.Data;

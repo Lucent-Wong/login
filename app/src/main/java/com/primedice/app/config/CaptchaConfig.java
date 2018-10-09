@@ -9,7 +9,7 @@ import java.util.Properties;
 
 
 @Configuration
-public class KaptchaConfig {
+public class CaptchaConfig {
 	@Bean
 	public DefaultKaptcha getDefaultKaptcha() {
 		com.google.code.kaptcha.impl.DefaultKaptcha defaultKaptcha = new com.google.code.kaptcha.impl.DefaultKaptcha();

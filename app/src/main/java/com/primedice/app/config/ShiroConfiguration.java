@@ -34,7 +34,7 @@ public class ShiroConfiguration {
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/captcha", "anon");
-        filterChainDefinitionMap.put("/authenticate", "anon");
+        filterChainDefinitionMap.put("/authenticate", "captcha");
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         filterChainDefinitionMap.put("/swagger-resources", "anon");
         filterChainDefinitionMap.put("/swagger-resources/configuration/security", "anon");

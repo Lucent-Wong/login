@@ -29,18 +29,16 @@ public class CaptchaAccessControlFilter extends AccessControlFilter {
         }
         Session session = SecurityUtils.getSubject().getSession();
         String captchaCode = getCaptchaCode(request);
-        String validateCode = (String)session.getAttribute(KAPTCHA_SESSION_KEY);
+        String validateCode = (String)session.getAttribute(CAPTCHA_CODE);
 
         if(captchaCode == null) {
             return false;
         } else if (validateCode != null) {
             captchaCode = captchaCode.toLowerCase();
             validateCode = validateCode.toLowerCase();
-            if(!captchaCode.equals(validateCode)) {
-                return false;
-            }
+            return captchaCode.equals(validateCode);
         }
-        return true;
+        return false;
     }
 
     @Override
