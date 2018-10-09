@@ -63,6 +63,7 @@ create table sys_user_account (
   eth_balance bigint default 0,
   wallet varchar(2000),
   secret varchar(100),
+  wallet_address varchar(500),
   description varchar(100),
   available bool default true,
   update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -24,6 +24,7 @@ public class UserAccount {
     String wallet;
     String walletSecret;
     Boolean available;
+    String walletAddress;
 
     @JsonIgnore
     public UserAccount withdraw(long value) throws InvalidValueException, InsufficientDepositException {

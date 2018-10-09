@@ -53,6 +53,7 @@ public class UserAccountServiceImpl implements UserAccountService {
                 .deposit(0L)
                 .ethBalance(0L)
                 .userId(user.getId())
+                .walletAddress(getWalletAddress(secret, walletContent))
                 .build();
         return userAccountMapper.createUserAccount(userAccount);
     }
@@ -116,8 +117,8 @@ public class UserAccountServiceImpl implements UserAccountService {
         UserAccount userAccount = userAccountMapper.findByUserIdForUpdate(user.getId());
         Long expectBalance = userAccount.getEthBalance();
 
-        Credentials credentials = getCredentials(userAccount);
-        Long realEthGetBalance = web3j.ethGetBalance(credentials.getAddress(), DefaultBlockParameterName.LATEST)
+        String walletAddress = getWalletAddress(userAccount.getWalletSecret(), userAccount.getWallet());
+        Long realEthGetBalance = web3j.ethGetBalance(walletAddress, DefaultBlockParameterName.LATEST)
                 .send()
                 .getBalance()
                 .longValueExact();
@@ -161,9 +162,12 @@ public class UserAccountServiceImpl implements UserAccountService {
         return new String(bytes);
     }
 
-    private Credentials getCredentials(UserAccount userAccount) throws IOException, CipherException {
-        String walletContent = userAccount.getWallet();
-        return WalletUtils.loadCredentialsByContent(userAccount.getWalletSecret(), walletContent);
+    private Credentials getCredentials(String secret, String walletContent) throws IOException, CipherException {
+        return WalletUtils.loadCredentialsByContent(secret, walletContent);
+    }
+
+    private String getWalletAddress(String secret, String walletConent) throws IOException, CipherException {
+        return getCredentials(secret, walletConent).getAddress();
     }
 
     private long extract(long money, long rate) throws Exception {

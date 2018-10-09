@@ -8,16 +8,17 @@
         <id column="eth_balance" property="ethBalance" jdbcType="BIGINT" />
         <id column="secret" property="walletSecret" jdbcType="VARCHAR" />
         <id column="wallet" property="wallet" jdbcType="VARCHAR" />
+        <id column="wallet_address" property="walletAddress" jdbcType="VARCHAR" />
         <id column="description" property="description" jdbcType="VARCHAR" />
         <result column="available" property="available" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <sql id="UserAccount_Column" >
-        user_id, deposit, eth_balance, secret, wallet, description, available
+        user_id, deposit, eth_balance, secret, wallet, wallet_address, description, available
     </sql>
 
     <sql id="UserAccount_Column_Without_Credential" >
-        user_id, deposit, eth_balance, description, available
+        user_id, wallet_address, deposit, eth_balance, description, available
     </sql>
 
     <insert id="createUserAccount" parameterType="com.primedice.common.entity.UserAccount">
@@ -25,7 +26,7 @@
         sys_user_account
         (<include refid="UserAccount_Column"/>)
         VALUES
-        (#{userId},#{deposit},#{ethBalance},#{walletSecret},#{wallet},#{description},#{available})
+        (#{userId},#{deposit},#{ethBalance},#{walletSecret},#{wallet}, #{walletAddress},#{description},#{available})
     </insert>
 
     <update id="updateUserAccount" parameterType="com.primedice.common.entity.UserAccount">
@@ -45,14 +46,18 @@
         where user_id = #{id}
     </delete>
 
-    <select id="findByUserId" parameterType="java.lang.Long" resultType="com.primedice.common.entity.UserAccount">
+    <select id="findByUserId" parameterType="java.lang.Long"
+            resultType="com.primedice.common.entity.UserAccount"
+            resultMap="UserAccountEntityMap">
         SELECT
         <include refid="UserAccount_Column"/>
         from sys_user_account
         where user_id = #{id}
     </select>
 
-    <select id="findByUserIdForUpdate" parameterType="java.lang.Long" resultType="com.primedice.common.entity.UserAccount">
+    <select id="findByUserIdForUpdate" parameterType="java.lang.Long"
+            resultType="com.primedice.common.entity.UserAccount"
+            resultMap="UserAccountEntityMap">
         SELECT
         <include refid="UserAccount_Column"/>
         from sys_user_account
@@ -60,7 +65,9 @@
         for update
     </select>
 
-    <select id="findByUserIdWithoutCredential" parameterType="java.lang.Long" resultType="com.primedice.common.entity.UserAccount">
+    <select id="findByUserIdWithoutCredential" parameterType="java.lang.Long"
+            resultType="com.primedice.common.entity.UserAccount"
+            resultMap="UserAccountEntityMap">
         SELECT
         <include refid="UserAccount_Column_Without_Credential"/>
         from sys_user_account
